@@ -4,13 +4,15 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const userModel = require("./models/User");
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://blog:Antares%401234@cluster0.wksya.mongodb.net/"
-);
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -43,6 +45,7 @@ app.get("/", (req, res) => {
   res.send("register");
 });
 
-app.listen(4000, () => {
-  console.log("Server is running on port 4000");
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
